@@ -1,4 +1,4 @@
-HELP.md
+tHELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -18,7 +18,10 @@ target/
 *.iws
 *.iml
 *.ipr
-
+*Zone.Identifier
+*.cmd
+mvnw
+test1
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
