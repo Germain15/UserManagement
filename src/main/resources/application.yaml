@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    # Pour tester localement sans Postgres, on utilise H2
+    url: jdbc:h2:mem:userdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true # Pour voir votre base dans le navigateur
+  jackson:
+    serialization:
+      indent_output: true
