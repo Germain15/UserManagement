@@ -19,8 +19,6 @@ target/
 *.iml
 *.ipr
 *Zone.Identifier
-*.cmd
-mvnw
 test1
 ### NetBeans ###
 /nbproject/private/
