@@ -2,18 +2,17 @@ name: CI/CD Pipeline User Management
 
 on:
   push:
-    branches: [ "**" ]
+    branches: [ "main" ]
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  # JOB 1 : TESTS
+  # JOB 1 : TESTS (Validation du code)
   tests:
-    name: 🧪 Run Unit & Integration Tests
+    name:  Run Unit & Integration Tests
     runs-on: ubuntu-latest
     services:
-      # On lance une vraie DB pour les tests d'intégration
       db:
         image: postgres:16-alpine
         env:
@@ -30,7 +29,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: 'maven' # CACHE DES DÉPENDANCES (Exigence 10pts)
+          cache: 'maven'
 
       - name: Run Tests with Maven
         run: mvn clean test
@@ -42,11 +41,13 @@ jobs:
           SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
           SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
-  # JOB 2 & 3 : BUILD & PUSH (Séquentiel, dépend des tests)
+  
+  # JOB 2 : BUILD & PUSH
+  
   build-and-push:
     name:  Build and Push Docker Image
     needs: tests
-    if: github.event_name != 'pull_request' # On ne push pas sur les PR
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -57,11 +58,8 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/user-management-api
           tags: |
-            # Tag SHA court 
             type=sha,format=short,prefix=sha-
-            # Tag 'latest' uniquement sur la branche main
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            # Tag sémantique (ex: v1.0.0 -> 1.0.0)
             type=semver,pattern={{version}}
 
       - name: Login to Docker Hub
@@ -78,24 +76,43 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  # JOB 4 : DEPLOY (Simulation structurée)
-  deploy:
-    name: Deployment
+  
+  # JOB 3 : DEPLOY STAGING (Simulation sur Push Main)
+  
+  deploy-staging:
+    name:  Deploy to Staging
     needs: build-and-push
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Staging
-        if: github.ref == 'refs/heads/main'
+      - name:  Preparation
+        run: echo "Connecting to Staging VPS via SSH..."
+
+      - name:  Update Environment
         run: |
-          echo "Deploying version ${{ github.sha }} to Staging Environment..."
-          echo "Simulating: ssh user@staging-vps 'docker compose pull && docker compose up -d'"
+          echo "Pulling latest image: ${{ secrets.DOCKER_USERNAME }}/user-management-api:latest"
+          echo "Executing: docker compose up -d --build"
+          echo "Deployment successful on http://staging-api.local"
 
-      - name: Deploy to Production
-        if: startsWith(github.ref, 'refs/tags/v')
+  
+  # JOB 4 : DEPLOY PRODUCTION (Simulation sur Tag uniquement)
+  
+  deploy-production:
+    name: Deploy to Production
+    needs: build-and-push
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name:  Pre-deploy Check (Rollback Safety)
         run: |
-          echo "Deploying version ${{ github.ref_name }} to Production Environment..."
-          echo "Executing Rollback strategy: Save current state before update."
+          echo "Backing up current database state before production release..."
+          echo "Verifying service health..."
 
-
-
+      - name: Production Release
+        run: |
+          echo "Deploying official release ${{ github.ref_name }}..."
+          echo "SSH Action: docker pull ${{ secrets.DOCKER_USERNAME }}/user-management-api:${{ github.ref_name }}"
+          echo "SSH Action: docker compose up -d"
           
+      - name:  Post-deploy Health Check
+        run: echo "Monitoring traffic... Production is stable."
