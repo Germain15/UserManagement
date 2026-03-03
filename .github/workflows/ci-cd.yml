@@ -35,9 +35,12 @@ jobs:
       - name: Run Tests with Maven
         run: mvn clean test
         env:
+          SPRING_PROFILES_ACTIVE: test
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/userDb
           SPRING_DATASOURCE_USERNAME: appuser
           SPRING_DATASOURCE_PASSWORD: password
+          SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+          SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
   # JOB 2 & 3 : BUILD & PUSH (Séquentiel, dépend des tests)
   build-and-push:
