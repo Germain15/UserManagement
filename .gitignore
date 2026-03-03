@@ -1,9 +1,10 @@
-tHELP.md
+HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+# Secrets
+.env
 ### STS ###
 .apt_generated
 .classpath
@@ -29,8 +30,8 @@ test1
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+.gitattributes
 ### VS Code ###
 .vscode/
-
+.dockerignore
 .fake
