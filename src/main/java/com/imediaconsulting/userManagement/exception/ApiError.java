@@ -1,3 +1,7 @@
+/**
+ * Format uniforme pour toutes les réponses d'erreur de l'API (400, 409, 500...).
+ * Permet au client de toujours savoir où trouver le message d'erreur.
+ */
 package com.imediaconsulting.userManagement.exception;
 
 import java.time.Instant;

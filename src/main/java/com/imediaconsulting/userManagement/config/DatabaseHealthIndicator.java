@@ -1,3 +1,8 @@
+/**
+ * Indicateur de santé custom pour Spring Actuator (/actuator/health).
+ * Complète le HealthController en enrichissant le endpoint Actuator
+ * avec les détails de connexion à la base.
+ */
 package com.imediaconsulting.userManagement.config;
 
 

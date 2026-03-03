@@ -1,3 +1,7 @@
+/**
+ * Corps attendu pour POST /users.
+ * Les annotations de validation déclenchent automatiquement un 400 si les contraintes ne sont pas respectées.
+ */
 package com.imediaconsulting.userManagement.dto;
 
 import jakarta.validation.constraints.NotBlank;

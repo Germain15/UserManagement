@@ -1,3 +1,7 @@
+/**
+ * Point central de gestion des erreurs pour toute l'API.
+ * Aucun contrôleur ne gère les exceptions directement — elles remontent toutes ici.
+ */
 package com.imediaconsulting.userManagement.exception;
 
 import org.springframework.http.HttpStatus;

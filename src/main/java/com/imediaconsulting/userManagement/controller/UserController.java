@@ -1,3 +1,7 @@
+/**
+ * Exposition HTTP des fonctionnalités utilisateur.
+ * Ce contrôleur ne contient aucune logique — il reçoit la requête, délègue au service, retourne la réponse.
+ */
 package com.imediaconsulting.userManagement.controller;
 
 import com.imediaconsulting.userManagement.dto.CreateUserRequest;

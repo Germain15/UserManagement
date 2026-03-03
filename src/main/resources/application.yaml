@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     # Docker injectera SPRING_DATASOURCE_URL. Sinon, on utilise H2 par défaut.

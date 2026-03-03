@@ -1,3 +1,8 @@
+/**
+ * Accès base de données pour l'entité User.
+ * Les méthodes sont générées par Spring Data JPA à partir de leur nom.
+ */
+
 package com.imediaconsulting.userManagement.repository;
 
 import com.imediaconsulting.userManagement.model.User;
