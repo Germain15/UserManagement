@@ -57,8 +57,11 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/user-management-api
           tags: |
-            type=sha,prefix=sha-
+            # Tag SHA court 
+            type=sha,format=short,prefix=sha-
+            # Tag 'latest' uniquement sur la branche main
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            # Tag sémantique (ex: v1.0.0 -> 1.0.0)
             type=semver,pattern={{version}}
 
       - name: Login to Docker Hub
@@ -92,3 +95,7 @@ jobs:
         run: |
           echo "Deploying version ${{ github.ref_name }} to Production Environment..."
           echo "Executing Rollback strategy: Save current state before update."
+
+
+
+          
