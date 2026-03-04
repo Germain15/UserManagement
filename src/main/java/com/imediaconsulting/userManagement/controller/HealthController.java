@@ -1,6 +1,6 @@
 /**
  * Endpoint de santé exposé sur GET /health.
- * Vérifie la connectivité à la base via un SELECT 1 réel — pas une réponse statique.
+ * Vérifie la connectivité à la base via un SELECT 1 réel pas une réponse statique.
  * Retourne 200 si tout va bien, 503 si la base est inaccessible.
  */
 package com.imediaconsulting.userManagement.controller;
