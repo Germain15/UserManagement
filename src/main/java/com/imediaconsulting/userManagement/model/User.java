@@ -1,6 +1,6 @@
 /* 
  * Entité JPA mappée sur la table 'users'.
- * Ne jamais retourner cette classe directement dans une réponse HTTP — passer par UserResponse.
+ * Ne jamais retourner cette classe directement dans une réponse HTTP passer par UserResponse.
 */
 
 package com.imediaconsulting.userManagement.model;
